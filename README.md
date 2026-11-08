@@ -1,6 +1,6 @@
 # Adaptive Traffic Signal Optimization using CV, DQN and Deep Reinforcement Learning
 
-M.Tech project. A four-way intersection is simulated in **Eclipse SUMO**. A **Deep Q-Network** chooses the next
+A four-way intersection is simulated in **Eclipse SUMO**. A **Deep Q-Network** chooses the next
 signal phase and the choice is applied to the real SUMO traffic light through **TraCI**, with enforced yellow and
 all-red transitions. A **YOLO** (CNN) module detects and counts vehicles in images and videos. An
 **emergency-priority controller** pre-empts the signal for ambulances. A **Streamlit** dashboard shows everything.
