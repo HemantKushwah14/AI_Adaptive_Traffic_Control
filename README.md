@@ -105,41 +105,12 @@ python scripts\run_all_checks.py --full     # + DQN session, comparison, emergen
 python scripts\generate_results_summary.py --out docs\RESULTS_SUMMARY.md
 ```
 
-## 7. Demonstration script (about 15 minutes)
-
-Prepare **before** the evaluation: train the DQN, run `run_comparison.py --seeds 5`, run the emergency demo, run
-`run_all_checks.py` and `generate_results_summary.py`. Comparisons take minutes, so show saved results and offer a live
-short run only if asked.
-
-1. **Problem and architecture (2 min)**: fixed-time signals waste green time; show the diagram above.
-2. **Test evidence (1 min)**: show `outputs\all_checks_report.json`.
-3. **Page 2, live simulation (3 min)**: run fixed-time, then reset and run the DQN with the same seed. Point out
-   yellow/all-red, queues, and that the picture is drawn from TraCI data.
-4. **Page 4, DQN (2 min)**: Q-values, legal actions, state table, training curves. State that Q-values are not a causal explanation.
-5. **Page 3, detection (2 min)**: upload an image, show boxes and class counts, and say which model mode is active.
-6. **Page 5, emergency (2 min)**: dispatch an ambulance, show preemption, clearance and restoration; say it is simulated.
-7. **Page 6, comparison (2 min)**: present measured numbers including seeds where the DQN did *not* win.
-8. **Limitations (1 min)**: use section 10.
-
-## 8. Viva preparation (short answers)
-
-- **Why DQN, not tabular Q-learning?** The state is continuous (17-D); a network generalises across traffic states.
-- **Why a target network and replay?** Replay breaks temporal correlation; a slowly updated target stabilises the bootstrap.
-- **Why mask actions?** Min-green and max-green rules make some phases illegal; the agent never bootstraps over them.
-- **Why is `done` not terminal?** An episode ends at a time limit, not a natural end state, so targets keep bootstrapping.
-- **How do you prevent unsafe signals?** Only 4 conflict-free phases exist, and every change goes green -> yellow -> all-red -> green.
-- **Is the comparison fair?** Same demand, duration and seeds; route files are hashed; seeds are held out from training.
-- **What if the DQN does not beat fixed-time?** That is a valid result; report it and discuss reward/baseline/training length.
-- **What does the YOLO network do?** Backbone (conv + C2f) extracts features, PAN-FPN neck fuses scales, decoupled anchor-free head predicts boxes and classes; NMS removes duplicates.
-- **Why split by sequence?** Neighbouring frames are near-duplicates; a frame-level split leaks test data.
-- **Why is ambulance detection hard?** Look-alikes, livery variation, night/rain, occlusion, distance, domain shift; hence multi-frame confirmation.
-
-## 9. Reproducibility
+## 7. Reproducibility
 
 Seeds: training 1000+episode, validation 9000+i, test 20000+i. The same `SimulationConfig` and seed give an identical route
 file and identical SUMO results. Checkpoints store training metadata; the UI warns when run settings differ from it.
 
-## 10. Limitations
+## 8. Limitations
 
 - The DQN trains on SUMO-measured state, not on camera images; vision is not wired into live control.
 - A trained DQN is evidenced only for conditions near its training range (about 300-800 veh/h per approach, 10-60 s green).
@@ -151,7 +122,7 @@ file and identical SUMO results. Checkpoints store training metadata; the UI war
 - The restoration after an emergency continues from the emergency phase; the interrupted phase is not replayed.
 - Single intersection, passenger-style vehicle types, no pedestrians.
 
-## 11. Troubleshooting
+## 9. Troubleshooting
 
 | Problem | Fix |
 |---|---|
@@ -162,7 +133,7 @@ file and identical SUMO results. Checkpoints store training metadata; the UI war
 | Page shows no DQN | Train first (section 5) or choose Fixed-time |
 | Detector cannot download weights | Download `yolov8n.pt` manually into `models\` |
 
-## 12. GitHub
+## 10. GitHub
 
 ```powershell
 git init -b main
@@ -174,12 +145,12 @@ git push -u origin main
 ```
 Datasets are not redistributed; check the licence of UA-DETRAC, its Hugging Face mirror, and your ambulance dataset.
 
-## 13. References (verify formats before citing)
+## 11. References (verify formats before citing)
 
 Mnih et al., "Human-level control through deep reinforcement learning", Nature 2015. Lopez et al., "Microscopic Traffic
 Simulation using SUMO", IEEE ITSC 2018. Wen et al., "UA-DETRAC: A New Benchmark and Protocol for Multi-Object
 Detection and Tracking", 2015. Ultralytics YOLOv8 documentation.
 
-## 14. Results
+## 12. Results
 
 Not written by hand. Generate `docs\RESULTS_SUMMARY.md` with `scripts\generate_results_summary.py` after your runs.
